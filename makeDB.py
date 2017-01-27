@@ -21,7 +21,7 @@ outfile_fasta=open('pubMLST_'+str(now.month)+'_' +str(now.year)+'.fasta', 'a')
 for MLSTschema in os.listdir(mlstDirectory):
 	#print MLSTschema
 	if os.path.isdir(mlstDirectory+'/'+MLSTschema): #there's a xml in the folder
-		schemaName=ntpath.basename(MLSTschema)
+		schemaName=ntpath.basename(MLSTschema).replace('_','')
 		print '-->' + str(schemaName)
 		#print 'lala'
 		for file in os.listdir(mlstDirectory+'/'+MLSTschema):
@@ -37,7 +37,7 @@ for MLSTschema in os.listdir(mlstDirectory):
 				with open(mlstDirectory+'/'+MLSTschema+'/'+file) as locusTFA:
 					alleles_dict = SeqIO.to_dict(SeqIO.parse(locusTFA, "fasta"))
 					for record in alleles_dict:
-						toWrite=SeqRecord(alleles_dict[record].seq, id=schemaName+'_'+record)
+						toWrite=SeqRecord(alleles_dict[record].seq, id=schemaName+'_'+record, description='')
 						SeqIO.write(toWrite, outfile_fasta, "fasta")
 
 outfile_txt.close()
